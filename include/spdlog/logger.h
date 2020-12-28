@@ -252,7 +252,7 @@ public:
 
     // T can be statically converted to wstring_view
     template<class T, typename std::enable_if<is_convertible_to_wstring_view<const T &>::value, int>::type = 0>
-    void log(source_loc loc, level::level_enum lvl, const T &msg)
+    details::Executor log(source_loc loc, level::level_enum lvl, const T &msg)
     {
         bool log_enabled = should_log(lvl);
         bool traceback_enabled = tracer_.enabled();
