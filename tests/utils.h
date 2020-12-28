@@ -16,3 +16,5 @@ void require_message_count(const std::string &filename, const std::size_t messag
 std::size_t get_filesize(const std::string &filename);
 
 bool ends_with(std::string const &value, std::string const &ending);
+
+std::string escaped_eol();

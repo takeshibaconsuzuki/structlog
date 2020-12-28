@@ -79,6 +79,17 @@ bool ends_with(std::string const &value, std::string const &ending)
     return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
 }
 
+std::string escaped_eol()
+{
+    if (spdlog::details::os::default_eol[0] == '\n')
+    {
+        assert(!strcmp(spdlog::details::os::default_eol, "\n"));
+        return "\\n";
+    }
+    assert(!strcmp(spdlog::details::os::default_eol, "\r\n"));
+    return "\\r\\n";
+}
+
 #ifdef _WIN32
 // Based on: https://stackoverflow.com/a/37416569/192001
 std::size_t count_files(const std::string &folder)

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <spdlog/common.h>
+#include <nlohmann/json.hpp>
 #include <string>
 
 namespace spdlog {
@@ -28,6 +29,7 @@ struct SPDLOG_API log_msg
 
     source_loc source;
     string_view_t payload;
+    const nlohmann::json *params = nullptr;
 };
 } // namespace details
 } // namespace spdlog

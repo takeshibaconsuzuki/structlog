@@ -11,6 +11,7 @@
 #include <wincon.h>
 
 #include <spdlog/common.h>
+#include <spdlog/json_formatter.h>
 #include <spdlog/pattern_formatter.h>
 
 namespace spdlog {
@@ -19,7 +20,7 @@ template<typename ConsoleMutex>
 SPDLOG_INLINE wincolor_sink<ConsoleMutex>::wincolor_sink(void *out_handle, color_mode mode)
     : out_handle_(out_handle)
     , mutex_(ConsoleMutex::mutex())
-    , formatter_(details::make_unique<spdlog::pattern_formatter>())
+    , formatter_(details::make_unique<spdlog::JSONFormatter>())
 {
 
     set_color_mode_impl(mode);

@@ -7,6 +7,7 @@
 #    include <spdlog/sinks/ansicolor_sink.h>
 #endif
 
+#include <spdlog/json_formatter.h>
 #include <spdlog/pattern_formatter.h>
 #include <spdlog/details/os.h>
 
@@ -17,7 +18,7 @@ template<typename ConsoleMutex>
 SPDLOG_INLINE ansicolor_sink<ConsoleMutex>::ansicolor_sink(FILE *target_file, color_mode mode)
     : target_file_(target_file)
     , mutex_(ConsoleMutex::mutex())
-    , formatter_(details::make_unique<spdlog::pattern_formatter>())
+    , formatter_(details::make_unique<spdlog::JSONFormatter>())
 
 {
     set_color_mode(mode);

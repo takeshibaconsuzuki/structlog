@@ -22,6 +22,7 @@ void syslog_example();
 void custom_flags_example();
 
 #include "spdlog/spdlog.h"
+#include "spdlog/json_formatter.h"
 #include "spdlog/cfg/env.h"  // support for loading levels from the environment variable
 #include "spdlog/fmt/ostr.h" // support for user defined types
 
@@ -30,7 +31,8 @@ int main(int, char *[])
     // Log levels can be loaded from argv/env using "SPDLOG_LEVEL"
     load_levels_example();
 
-    spdlog::info("Welcome to spdlog version {}.{}.{}  !", SPDLOG_VER_MAJOR, SPDLOG_VER_MINOR, SPDLOG_VER_PATCH);
+    spdlog::info("Welcome to spdlog!")(
+        {{"version", {{"major", SPDLOG_VER_MAJOR}, {"minor", SPDLOG_VER_MINOR}, {"patch", SPDLOG_VER_PATCH}}}});
 
     spdlog::warn("Easy padding in numbers like {:08d}", 12);
     spdlog::critical("Support for int: {0:d};  hex: {0:x};  oct: {0:o}; bin: {0:b}", 42);
@@ -47,7 +49,7 @@ int main(int, char *[])
     // Customize msg format for all loggers
     spdlog::set_pattern("[%H:%M:%S %z] [%^%L%$] [thread %t] %v");
     spdlog::info("This an info message with custom format");
-    spdlog::set_pattern("%+"); // back to default format
+    spdlog::set_formatter(spdlog::details::make_unique<spdlog::JSONFormatter>()); // back to default format
     spdlog::set_level(spdlog::level::info);
 
     // Backtrace support
