@@ -18,6 +18,7 @@
 #include <spdlog/details/log_msg.h>
 #include <spdlog/details/backtracer.h>
 #include <spdlog/details/executor.h>
+#include <spdlog/json_formatter.h>
 
 #ifdef SPDLOG_WCHAR_TO_UTF8_SUPPORT
 #    ifndef _WIN32
@@ -286,6 +287,12 @@ public:
     void set_formatter(std::unique_ptr<formatter> f);
 
     void set_pattern(std::string pattern, pattern_time_type time_type = pattern_time_type::local);
+
+    template<class... Args>
+    void set_populators(Args &&... args)
+    {
+        set_formatter(details::make_unique<JSONFormatter>(populators::make_populator_set(std::forward<Args>(args)...)));
+    }
 
     // backtrace support.
     // efficiently store all debug/trace messages in a circular buffer until needed for debugging.
