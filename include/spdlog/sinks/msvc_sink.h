@@ -11,7 +11,6 @@
 #include <mutex>
 #include <string>
 
-
 // Avoid including windows.h (https://stackoverflow.com/a/30741042)
 extern "C" __declspec(dllimport) void __stdcall OutputDebugStringA(const char *lpOutputString);
 
