@@ -164,7 +164,13 @@ TEST_CASE("to_file", "[async]")
     require_message_count(filename, messages);
     auto contents = file_contents(filename);
     using spdlog::details::os::default_eol;
-    REQUIRE(ends_with(contents, fmt::format("Hello message #1023{}", default_eol)));
+    size_t last_line_idx = contents.rfind(default_eol);
+    if (last_line_idx + strlen(default_eol) == contents.size())
+    {
+        last_line_idx = contents.rfind(default_eol, last_line_idx - 1);
+    }
+    const auto expected = "\"message\":\"Hello message #1023\"";
+    REQUIRE(contents.substr(last_line_idx).find(expected) < std::string::npos);
 }
 
 TEST_CASE("to_file multi-workers", "[async]")

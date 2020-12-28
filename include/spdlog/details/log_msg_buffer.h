@@ -17,6 +17,8 @@ class SPDLOG_API log_msg_buffer : public log_msg
     void update_string_views();
 
 public:
+    nlohmann::json params_buffer;
+
     log_msg_buffer() = default;
     explicit log_msg_buffer(const log_msg &orig_msg);
     log_msg_buffer(const log_msg_buffer &other);
