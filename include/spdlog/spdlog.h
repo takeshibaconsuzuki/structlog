@@ -14,6 +14,7 @@
 #include <spdlog/logger.h>
 #include <spdlog/version.h>
 #include <spdlog/details/synchronous_factory.h>
+#include <spdlog/json_formatter.h>
 
 #include <chrono>
 #include <functional>
@@ -57,6 +58,12 @@ SPDLOG_API void set_formatter(std::unique_ptr<spdlog::formatter> formatter);
 // Set global format string.
 // example: spdlog::set_pattern("%Y-%m-%d %H:%M:%S.%e %l : %v");
 SPDLOG_API void set_pattern(std::string pattern, pattern_time_type time_type = pattern_time_type::local);
+
+template<class... Args>
+SPDLOG_API void set_populators(Args &&... args)
+{
+    set_formatter(details::make_unique<JSONFormatter>(populators::make_populator_set(std::forward<Args>(args)...)));
+}
 
 // enable global backtrace support
 SPDLOG_API void enable_backtrace(size_t n_messages);

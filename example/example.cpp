@@ -22,7 +22,6 @@ void syslog_example();
 void custom_flags_example();
 
 #include "spdlog/spdlog.h"
-#include "spdlog/json_formatter.h"
 #include "spdlog/cfg/env.h" // for loading levels from the environment variable
 
 int main(int, char *[])
@@ -46,12 +45,13 @@ int main(int, char *[])
     spdlog::debug("This message should be displayed..");
 
     // Customize msg format for all loggers
-    spdlog::set_formatter(spdlog::details::make_unique<spdlog::JSONFormatter>(
-        spdlog::populators::make_populator_set(spdlog::details::make_unique<spdlog::populators::DateTimePopulator>(),
-            spdlog::details::make_unique<spdlog::populators::LevelPopulator>(),
-            spdlog::details::make_unique<spdlog::populators::ThreadIDPopulator>(),
-            spdlog::details::make_unique<spdlog::populators::MessagePopulator>())));
+    spdlog::set_populators(spdlog::details::make_unique<spdlog::populators::DateTimePopulator>(),
+        spdlog::details::make_unique<spdlog::populators::LevelPopulator>(),
+        spdlog::details::make_unique<spdlog::populators::ThreadIDPopulator>(),
+        spdlog::details::make_unique<spdlog::populators::MessagePopulator>());
     spdlog::info("This is an info message with custom populators");
+    spdlog::set_populators();
+    spdlog::info("This should log an empty json object");
     spdlog::set_formatter(spdlog::details::make_unique<spdlog::JSONFormatter>()); // back to default format
     spdlog::set_level(spdlog::level::info);
 

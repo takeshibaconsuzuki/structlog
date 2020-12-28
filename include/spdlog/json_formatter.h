@@ -33,7 +33,7 @@ public:
 
     void format(const details::log_msg &msg, memory_buf_t &dest) override
     {
-        nlohmann::json entry;
+        nlohmann::json entry = nlohmann::json::object();
         for (const auto &populator : populators_)
         {
             populator->populate(msg, entry);
