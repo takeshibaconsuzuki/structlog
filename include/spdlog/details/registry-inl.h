@@ -11,6 +11,7 @@
 #include <spdlog/details/periodic_worker.h>
 #include <spdlog/logger.h>
 #include <spdlog/pattern_formatter.h>
+#include <spdlog/json_formatter.h>
 
 #ifndef SPDLOG_DISABLE_DEFAULT_LOGGER
 // support for the default stdout color logger
@@ -31,7 +32,7 @@ namespace spdlog {
 namespace details {
 
 SPDLOG_INLINE registry::registry()
-    : formatter_(new pattern_formatter())
+    : formatter_(new JSONFormatter())
 {
 
 #ifndef SPDLOG_DISABLE_DEFAULT_LOGGER
