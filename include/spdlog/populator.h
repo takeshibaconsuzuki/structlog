@@ -92,7 +92,7 @@ public:
 class SPDLOG_API PIDPopulator : public Populator
 {
 public:
-    void populate(const details::log_msg &msg, nlohmann::json &dest) override
+    void populate(const details::log_msg &, nlohmann::json &dest) override
     {
         dest["pid"] = details::os::pid();
     }
@@ -147,7 +147,8 @@ PopulatorSet make_populator_set(Args &&... args)
 {
     PopulatorSet ret;
     int dummy[] = {(ret.insert(std::move(std::forward<Args>(args))), 0)...};
-    return std::move(ret);
+    (void)dummy;
+    return ret;
 }
 
 } // namespace populators
