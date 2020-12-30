@@ -16,10 +16,9 @@ private:
 public:
     static populators::PopulatorSet make_default_populator_set()
     {
-        auto ret = populators::make_populator_set(details::make_unique<populators::DateTimePopulator>(),
+        return populators::make_populator_set(details::make_unique<populators::DateTimePopulator>(),
             details::make_unique<populators::LevelPopulator>(), details::make_unique<populators::LoggerNamePopulator>(),
             details::make_unique<populators::MessagePopulator>());
-        return std::move(ret);
     }
 
     JSONFormatter(std::string eol = spdlog::details::os::default_eol)
@@ -27,8 +26,8 @@ public:
     {}
 
     JSONFormatter(populators::PopulatorSet &&populators, std::string eol = spdlog::details::os::default_eol)
-        : populators_(std::move(populators))
-        , kEOL(std::move(eol))
+        : kEOL(std::move(eol))
+        , populators_(std::move(populators))
     {}
 
     void format(const details::log_msg &msg, memory_buf_t &dest) override
