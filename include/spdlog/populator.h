@@ -2,9 +2,8 @@
 
 #include <spdlog/details/log_msg.h>
 #include <spdlog/details/os.h>
+#include <spdlog/json.hpp>
 #include <spdlog/pattern_formatter.h>
-
-#include <nlohmann/json.hpp>
 
 #include <unordered_set>
 
