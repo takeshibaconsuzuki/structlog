@@ -77,56 +77,56 @@ public:
 
     // FormatString is a type derived from fmt::compile_string
     template<typename FormatString, typename std::enable_if<fmt::is_compile_string<FormatString>::value, int>::type = 0, typename... Args>
-    details::Executor log(source_loc loc, level::level_enum lvl, const FormatString &fmt, Args &&... args)
+    details::Executor log(source_loc loc, level::level_enum lvl, const FormatString &fmt, Args &&...args)
     {
         return std::move(log_(loc, lvl, fmt, std::forward<Args>(args)...));
     }
 
     // FormatString is NOT a type derived from fmt::compile_string but is a string_view_t or can be implicitly converted to one
     template<typename... Args>
-    details::Executor log(source_loc loc, level::level_enum lvl, string_view_t fmt, Args &&... args)
+    details::Executor log(source_loc loc, level::level_enum lvl, string_view_t fmt, Args &&...args)
     {
         return std::move(log_(loc, lvl, fmt, std::forward<Args>(args)...));
     }
 
     template<typename FormatString, typename... Args>
-    details::Executor log(level::level_enum lvl, const FormatString &fmt, Args &&... args)
+    details::Executor log(level::level_enum lvl, const FormatString &fmt, Args &&...args)
     {
         return std::move(log(source_loc{}, lvl, fmt, std::forward<Args>(args)...));
     }
 
     template<typename FormatString, typename... Args>
-    details::Executor trace(const FormatString &fmt, Args &&... args)
+    details::Executor trace(const FormatString &fmt, Args &&...args)
     {
         return std::move(log(level::trace, fmt, std::forward<Args>(args)...));
     }
 
     template<typename FormatString, typename... Args>
-    details::Executor debug(const FormatString &fmt, Args &&... args)
+    details::Executor debug(const FormatString &fmt, Args &&...args)
     {
         return std::move(log(level::debug, fmt, std::forward<Args>(args)...));
     }
 
     template<typename FormatString, typename... Args>
-    details::Executor info(const FormatString &fmt, Args &&... args)
+    details::Executor info(const FormatString &fmt, Args &&...args)
     {
         return std::move(log(level::info, fmt, std::forward<Args>(args)...));
     }
 
     template<typename FormatString, typename... Args>
-    details::Executor warn(const FormatString &fmt, Args &&... args)
+    details::Executor warn(const FormatString &fmt, Args &&...args)
     {
         return std::move(log(level::warn, fmt, std::forward<Args>(args)...));
     }
 
     template<typename FormatString, typename... Args>
-    details::Executor error(const FormatString &fmt, Args &&... args)
+    details::Executor error(const FormatString &fmt, Args &&...args)
     {
         return std::move(log(level::err, fmt, std::forward<Args>(args)...));
     }
 
     template<typename FormatString, typename... Args>
-    details::Executor critical(const FormatString &fmt, Args &&... args)
+    details::Executor critical(const FormatString &fmt, Args &&...args)
     {
         return std::move(log(level::critical, fmt, std::forward<Args>(args)...));
     }
@@ -227,7 +227,7 @@ public:
 #else
 
     template<typename... Args>
-    details::Executor log(source_loc loc, level::level_enum lvl, wstring_view_t fmt, Args &&... args)
+    details::Executor log(source_loc loc, level::level_enum lvl, wstring_view_t fmt, Args &&...args)
     {
         bool log_enabled = should_log(lvl);
         bool traceback_enabled = tracer_.enabled();
@@ -299,7 +299,7 @@ public:
     void set_pattern(std::string pattern, pattern_time_type time_type = pattern_time_type::local);
 
     template<class... Args>
-    void set_populators(Args &&... args)
+    void set_populators(Args &&...args)
     {
         set_formatter(details::make_unique<JSONFormatter>(populators::make_populator_set(std::forward<Args>(args)...)));
     }
@@ -336,7 +336,7 @@ protected:
 
     // common implementation for after templated public api has been resolved
     template<typename FormatString, typename... Args>
-    details::Executor log_(source_loc loc, level::level_enum lvl, const FormatString &fmt, Args &&... args)
+    details::Executor log_(source_loc loc, level::level_enum lvl, const FormatString &fmt, Args &&...args)
     {
         bool log_enabled = should_log(lvl);
         bool traceback_enabled = tracer_.enabled();

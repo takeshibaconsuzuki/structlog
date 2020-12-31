@@ -32,7 +32,7 @@ using default_factory = synchronous_factory;
 // Example:
 //   spdlog::create<daily_file_sink_st>("logger_name", "dailylog_filename", 11, 59);
 template<typename Sink, typename... SinkArgs>
-inline std::shared_ptr<spdlog::logger> create(std::string logger_name, SinkArgs &&... sink_args)
+inline std::shared_ptr<spdlog::logger> create(std::string logger_name, SinkArgs &&...sink_args)
 {
     return default_factory::create<Sink>(std::move(logger_name), std::forward<SinkArgs>(sink_args)...);
 }
@@ -60,7 +60,7 @@ SPDLOG_API void set_formatter(std::unique_ptr<spdlog::formatter> formatter);
 SPDLOG_API void set_pattern(std::string pattern, pattern_time_type time_type = pattern_time_type::local);
 
 template<class... Args>
-SPDLOG_API void set_populators(Args &&... args)
+SPDLOG_API void set_populators(Args &&...args)
 {
     set_formatter(details::make_unique<JSONFormatter>(populators::make_populator_set(std::forward<Args>(args)...)));
 }
@@ -135,49 +135,49 @@ SPDLOG_API spdlog::logger *default_logger_raw();
 SPDLOG_API void set_default_logger(std::shared_ptr<spdlog::logger> default_logger);
 
 template<typename FormatString, typename... Args>
-inline details::Executor log(source_loc source, level::level_enum lvl, const FormatString &fmt, Args &&... args)
+inline details::Executor log(source_loc source, level::level_enum lvl, const FormatString &fmt, Args &&...args)
 {
     return std::move(default_logger_raw()->log(source, lvl, fmt, std::forward<Args>(args)...));
 }
 
 template<typename FormatString, typename... Args>
-inline details::Executor log(level::level_enum lvl, const FormatString &fmt, Args &&... args)
+inline details::Executor log(level::level_enum lvl, const FormatString &fmt, Args &&...args)
 {
     return std::move(default_logger_raw()->log(source_loc{}, lvl, fmt, std::forward<Args>(args)...));
 }
 
 template<typename FormatString, typename... Args>
-inline details::Executor trace(const FormatString &fmt, Args &&... args)
+inline details::Executor trace(const FormatString &fmt, Args &&...args)
 {
     return std::move(default_logger_raw()->trace(fmt, std::forward<Args>(args)...));
 }
 
 template<typename FormatString, typename... Args>
-inline details::Executor debug(const FormatString &fmt, Args &&... args)
+inline details::Executor debug(const FormatString &fmt, Args &&...args)
 {
     return std::move(default_logger_raw()->debug(fmt, std::forward<Args>(args)...));
 }
 
 template<typename FormatString, typename... Args>
-inline details::Executor info(const FormatString &fmt, Args &&... args)
+inline details::Executor info(const FormatString &fmt, Args &&...args)
 {
     return std::move(default_logger_raw()->info(fmt, std::forward<Args>(args)...));
 }
 
 template<typename FormatString, typename... Args>
-inline details::Executor warn(const FormatString &fmt, Args &&... args)
+inline details::Executor warn(const FormatString &fmt, Args &&...args)
 {
     return std::move(default_logger_raw()->warn(fmt, std::forward<Args>(args)...));
 }
 
 template<typename FormatString, typename... Args>
-inline details::Executor error(const FormatString &fmt, Args &&... args)
+inline details::Executor error(const FormatString &fmt, Args &&...args)
 {
     return std::move(default_logger_raw()->error(fmt, std::forward<Args>(args)...));
 }
 
 template<typename FormatString, typename... Args>
-inline details::Executor critical(const FormatString &fmt, Args &&... args)
+inline details::Executor critical(const FormatString &fmt, Args &&...args)
 {
     return std::move(default_logger_raw()->critical(fmt, std::forward<Args>(args)...));
 }

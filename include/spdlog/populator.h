@@ -142,7 +142,7 @@ public:
 typedef std::unordered_set<std::unique_ptr<Populator>> PopulatorSet;
 
 template<class... Args>
-PopulatorSet make_populator_set(Args &&... args)
+PopulatorSet make_populator_set(Args &&...args)
 {
     PopulatorSet ret;
     int dummy[] = {(ret.insert(std::move(std::forward<Args>(args))), 0)...};

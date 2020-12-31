@@ -20,7 +20,7 @@ public:
     virtual void set_formatter(std::unique_ptr<spdlog::formatter> sink_formatter) = 0;
 
     template<class... Args>
-    void set_populators(Args &&... args)
+    void set_populators(Args &&...args)
     {
         set_formatter(details::make_unique<JSONFormatter>(populators::make_populator_set(std::forward<Args>(args)...)));
     }
