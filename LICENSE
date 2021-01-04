@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2016 Gabi Melman.                                       
+Copyright (c) 2020 Takeshi Suzuki.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,4 +23,7 @@ THE SOFTWARE.
 -- NOTE: Third party dependency used by this software --
 This software depends on the fmt lib (MIT License),
 and users must comply to its license: https://github.com/fmtlib/fmt/blob/master/LICENSE.rst
-
+This software depends on the spdlog lib (MIT License),
+and users must comply to its license: https://github.com/gabime/spdlog/blob/v1.x/LICENSE
+This software depends on the nlohmann_json lib (MIT License),
+and users must comply to its license: https://github.com/nlohmann/json/blob/develop/LICENSE.MIT
