@@ -412,5 +412,6 @@ void swap(logger &a, logger &b);
 } // namespace spdlog
 
 #ifdef SPDLOG_HEADER_ONLY
+#    include "details/executor-inl.h"
 #    include "logger-inl.h"
 #endif

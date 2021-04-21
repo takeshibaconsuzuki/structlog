@@ -4,6 +4,8 @@
 #include <spdlog/details/executor.h>
 #endif
 
+#include <spdlog/logger.h>
+
 namespace spdlog {
 
 namespace details {

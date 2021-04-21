@@ -46,6 +46,5 @@ public:
 
 } // namespace spdlog
 
-#ifdef SPDLOG_HEADER_ONLY
-#include "executor-inl.h"
-#endif
+// executor-inl.h is included in logger.h because it needs to know the logger
+// interface
