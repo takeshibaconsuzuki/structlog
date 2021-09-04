@@ -15,13 +15,13 @@ automatically start logging in JSON.
 ### Header only version
 
 Copy the include
-[folder](https://github.com/gabime/spdlog/tree/v1.x/include/spdlog) to your
-build tree and use a C++11 compiler.
+[folder](https://github.com/takeshibaconsuzuki/structlog/tree/v1.x/include/spdlog)
+to your build tree and use a C++11 compiler.
 
 ### Static lib version (recommended - much faster compile times)
 
 ```
-$ git clone https://github.com/gabime/spdlog.git
+$ git clone https://github.com/takeshibaconsuzuki/structlog.git
 $ cd spdlog && mkdir build && cd build
 $ cmake .. && make -j
 ```
@@ -87,8 +87,8 @@ spdlog::info("Welcome to spdlog!")({
   {"version", {
     {"major", SPDLOG_VER_MAJOR},
     {"minor", SPDLOG_VER_MINOR},
-    {"patch", SPDLOG_VER_PATCH}}
-  }
+    {"patch", SPDLOG_VER_PATCH},
+  }},
 });
 ```
 
