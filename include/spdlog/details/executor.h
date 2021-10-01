@@ -1,8 +1,7 @@
 #pragma once
 
 #include <spdlog/details/log_msg_buffer.h>
-
-#include <nlohmann/json.hpp>
+#include <spdlog/json.hpp>
 
 namespace spdlog {
 

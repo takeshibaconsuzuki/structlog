@@ -4,7 +4,7 @@
 #pragma once
 
 #include <spdlog/common.h>
-#include <nlohmann/json.hpp>
+#include <spdlog/json.hpp>
 #include <string>
 
 namespace spdlog {
