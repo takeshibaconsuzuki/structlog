@@ -301,11 +301,13 @@ public:
 
     void set_pattern(std::string pattern, pattern_time_type time_type = pattern_time_type::local);
 
+#ifdef SPDLOG_JSON_LOGGER
     template<class... Args>
     void set_populators(Args &&... args)
     {
         set_formatter(details::make_unique<json_formatter>(populators::make_populator_set(std::forward<Args>(args)...)));
     }
+#endif
 
     // backtrace support.
     // efficiently store all debug/trace messages in a circular buffer until needed for debugging.

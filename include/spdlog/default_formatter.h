@@ -2,14 +2,24 @@
 
 #include <spdlog/common.h>
 
+#ifdef SPDLOG_JSON_LOGGER
+
+#include <spdlog/json_formatter.h>
+
 namespace spdlog {
 
-#ifdef SPDLOG_JSON_LOGGER
-#    include <spdlog/json_formatter.h>
 typedef ::spdlog::json_formatter default_formatter;
-#else
-#    include <spdlog/pattern_formatter.h>
-typedef ::spdlog::pattern_formatter default_formatter;
-#endif
 
 }  // namespace spdlog
+
+#else
+
+#include <spdlog/pattern_formatter.h>
+
+namespace spdlog {
+
+typedef ::spdlog::pattern_formatter default_formatter;
+
+}  // namespace spdlog
+
+#endif

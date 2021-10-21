@@ -52,6 +52,7 @@ int main(int, char *[])
     spdlog::debug("This message should be displayed..");
 
     // Customize msg format for all loggers
+#ifdef SPDLOG_JSON_LOGGER
     spdlog::set_populators(
         spdlog::details::make_unique<spdlog::populators::date_time_populator>(),
         spdlog::details::make_unique<spdlog::populators::level_populator>(),
@@ -60,6 +61,10 @@ int main(int, char *[])
     spdlog::info("This is an info message with custom populators");
     spdlog::set_populators();
     spdlog::info("This should log an empty json object");
+#else
+    spdlog::set_pattern("[%H:%M:%S %z] [%^%L%$] [thread %t] %v");
+    spdlog::info("This an info message with custom format");
+#endif
     spdlog::set_formatter(spdlog::details::make_unique<spdlog::default_formatter>()); // back to default format
     spdlog::set_level(spdlog::level::info);
 

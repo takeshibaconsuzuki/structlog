@@ -8,7 +8,6 @@
 #endif
 
 #include <spdlog/details/console_globals.h>
-#include <spdlog/json_formatter.h>
 #include <spdlog/pattern_formatter.h>
 #include <spdlog/default_formatter.h>
 #include <memory>

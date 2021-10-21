@@ -1,5 +1,9 @@
 #pragma once
 
+#include <spdlog/common.h>
+
+#ifdef SPDLOG_JSON_LOGGER
+
 #include <spdlog/details/log_msg_buffer.h>
 #include <spdlog/json.h>
 
@@ -48,4 +52,6 @@ public:
 
 #ifdef SPDLOG_HEADER_ONLY
 #    include "executor-inl.h"
+#endif
+
 #endif

@@ -11,7 +11,6 @@
 #include <wincon.h>
 
 #include <spdlog/common.h>
-#include <spdlog/json_formatter.h>
 #include <spdlog/pattern_formatter.h>
 #include <spdlog/default_formatter.h>
 

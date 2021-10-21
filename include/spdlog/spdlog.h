@@ -59,11 +59,13 @@ SPDLOG_API void set_formatter(std::unique_ptr<spdlog::formatter> formatter);
 // example: spdlog::set_pattern("%Y-%m-%d %H:%M:%S.%e %l : %v");
 SPDLOG_API void set_pattern(std::string pattern, pattern_time_type time_type = pattern_time_type::local);
 
+#ifdef SPDLOG_JSON_LOGGER
 template<class... Args>
 SPDLOG_API void set_populators(Args &&... args)
 {
     set_formatter(details::make_unique<json_formatter>(populators::make_populator_set(std::forward<Args>(args)...)));
 }
+#endif
 
 // enable global backtrace support
 SPDLOG_API void enable_backtrace(size_t n_messages);

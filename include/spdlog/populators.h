@@ -1,5 +1,9 @@
 #pragma once
 
+#include <spdlog/common.h>
+
+#ifdef SPDLOG_JSON_LOGGER
+
 #include <spdlog/details/log_msg.h>
 #include <spdlog/details/os.h>
 #include <spdlog/json.h>
@@ -113,4 +117,6 @@ populator_set make_populator_set(Args &&... args)
 
 #ifdef SPDLOG_HEADER_ONLY
 #    include "populators-inl.h"
+#endif
+
 #endif

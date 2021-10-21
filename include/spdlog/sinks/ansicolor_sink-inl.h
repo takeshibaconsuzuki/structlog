@@ -7,7 +7,6 @@
 #    include <spdlog/sinks/ansicolor_sink.h>
 #endif
 
-#include <spdlog/json_formatter.h>
 #include <spdlog/pattern_formatter.h>
 #include <spdlog/default_formatter.h>
 #include <spdlog/details/os.h>

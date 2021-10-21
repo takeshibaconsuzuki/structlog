@@ -1,5 +1,9 @@
 #pragma once
 
+#include <spdlog/common.h>
+
+#ifdef SPDLOG_JSON_LOGGER
+
 #ifndef SPDLOG_HEADER_ONLY
 #include <spdlog/details/executor.h>
 #endif
@@ -71,3 +75,5 @@ SPDLOG_INLINE executor &executor::operator()(const nlohmann::json &params)
 } // namespace details
 
 } // namespace spdlog
+
+#endif

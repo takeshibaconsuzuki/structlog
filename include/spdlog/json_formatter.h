@@ -1,5 +1,9 @@
 #pragma once
 
+#include <spdlog/common.h>
+
+#ifdef SPDLOG_JSON_LOGGER
+
 #include <spdlog/details/os.h>
 #include <spdlog/formatter.h>
 #include <spdlog/populators.h>
@@ -32,4 +36,6 @@ public:
 
 #ifdef SPDLOG_HEADER_ONLY
 #    include "json_formatter-inl.h"
+#endif
+
 #endif

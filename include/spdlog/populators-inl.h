@@ -1,5 +1,9 @@
 #pragma once
 
+#include <spdlog/common.h>
+
+#ifdef SPDLOG_JSON_LOGGER
+
 #ifndef SPDLOG_HEADER_ONLY
 #    include <spdlog/populators.h>
 #endif
@@ -98,3 +102,5 @@ SPDLOG_INLINE std::unique_ptr<populator> timestamp_populator::clone() const
 } // namespace populators
 
 } // namespace spdlog
+
+#endif

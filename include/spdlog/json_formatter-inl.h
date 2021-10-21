@@ -1,5 +1,9 @@
 #pragma once
 
+#include <spdlog/common.h>
+
+#ifdef SPDLOG_JSON_LOGGER
+
 #ifndef SPDLOG_HEADER_ONLY
 #    include <spdlog/json_formatter.h>
 #endif
@@ -53,3 +57,5 @@ SPDLOG_INLINE std::unique_ptr<formatter> json_formatter::clone() const
 }
 
 } // namespace spdlog
+
+#endif
