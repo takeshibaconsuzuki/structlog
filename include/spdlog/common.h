@@ -15,6 +15,16 @@
 #include <type_traits>
 #include <functional>
 
+#ifdef SPDLOG_JSON_LOGGER
+#    define SPDLOG_EXECUTOR_T ::spdlog::details::executor
+#    define SPDLOG_RETURN_EXECUTOR return
+#    define SPDLOG_DUMMY_EXECUTOR ::spdlog::details::executor()
+#else
+#    define SPDLOG_EXECUTOR_T void
+#    define SPDLOG_RETURN_EXECUTOR
+#    define SPDLOG_DUMMY_EXECUTOR (void)0
+#endif
+
 #ifdef SPDLOG_COMPILED_LIB
 #    undef SPDLOG_HEADER_ONLY
 #    if defined(_WIN32) && defined(SPDLOG_SHARED_LIB)

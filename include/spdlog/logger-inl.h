@@ -162,8 +162,7 @@ SPDLOG_INLINE std::shared_ptr<logger> logger::clone(std::string logger_name)
     return cloned;
 }
 
-// protected methods
-SPDLOG_INLINE void logger::log_it_(const spdlog::details::log_msg &log_msg, bool log_enabled, bool traceback_enabled)
+SPDLOG_INLINE void logger::executor_callback(const spdlog::details::log_msg &log_msg, bool log_enabled, bool traceback_enabled)
 {
     if (log_enabled)
     {
@@ -174,6 +173,19 @@ SPDLOG_INLINE void logger::log_it_(const spdlog::details::log_msg &log_msg, bool
         tracer_.push_back(log_msg);
     }
 }
+
+// protected methods
+#ifdef SPDLOG_JSON_LOGGER
+SPDLOG_INLINE spdlog::details::executor logger::log_it_(const spdlog::details::log_msg &log_msg, bool log_enabled, bool traceback_enabled)
+{
+    return spdlog::details::executor(this, log_msg, log_enabled, traceback_enabled);
+}
+#else
+SPDLOG_INLINE void logger::log_it_(const spdlog::details::log_msg &log_msg, bool log_enabled, bool traceback_enabled)
+{
+    executor_callback(log_msg, log_enabled, traceback_enabled);
+}
+#endif
 
 SPDLOG_INLINE void logger::sink_it_(const details::log_msg &msg)
 {

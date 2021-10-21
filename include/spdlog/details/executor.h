@@ -9,8 +9,6 @@ class logger;
 
 namespace details {
 
-#ifdef SPDLOG_JSON_LOGGER
-
 class SPDLOG_API executor
 {
 private:
@@ -43,20 +41,6 @@ public:
     executor &operator()(const nlohmann::json &params);
 };
 
-#else
-
-class SPDLOG_API executor
-{
-public:
-    executor() = default;
-
-    executor(logger *lgr, const log_msg &msg, bool log_enabled, bool traceback_enabled);
-
-    executor &operator()(const nlohmann::json &params);
-};
-
-#endif
-
 } // namespace details
 
 } // namespace spdlog
@@ -65,4 +49,3 @@ public:
 #ifdef SPDLOG_HEADER_ONLY
 #    include "executor-inl.h"
 #endif
-
