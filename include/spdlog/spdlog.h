@@ -137,147 +137,147 @@ SPDLOG_API void set_default_logger(std::shared_ptr<spdlog::logger> default_logge
 template<typename... Args>
 inline details::Executor log(source_loc source, level::level_enum lvl, fmt::format_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->log(source, lvl, fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->log(source, lvl, fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor log(level::level_enum lvl, fmt::format_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->log(source_loc{}, lvl, fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->log(source_loc{}, lvl, fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor trace(fmt::format_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->trace(fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->trace(fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor debug(fmt::format_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->debug(fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->debug(fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor info(fmt::format_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->info(fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->info(fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor warn(fmt::format_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->warn(fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->warn(fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor error(fmt::format_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->error(fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->error(fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor critical(fmt::format_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->critical(fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->critical(fmt, std::forward<Args>(args)...);
 }
 
 template<typename T>
 inline details::Executor log(source_loc source, level::level_enum lvl, const T &msg)
 {
-    return std::move(default_logger_raw()->log(source, lvl, msg));
+    return default_logger_raw()->log(source, lvl, msg);
 }
 
 template<typename T>
 inline details::Executor log(level::level_enum lvl, const T &msg)
 {
-    return std::move(default_logger_raw()->log(lvl, msg));
+    return default_logger_raw()->log(lvl, msg);
 }
 
 #ifdef SPDLOG_WCHAR_TO_UTF8_SUPPORT
 template<typename... Args>
 inline details::Executor log(source_loc source, level::level_enum lvl, fmt::wformat_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->log(source, lvl, fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->log(source, lvl, fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor log(level::level_enum lvl, fmt::wformat_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->log(source_loc{}, lvl, fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->log(source_loc{}, lvl, fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor trace(fmt::wformat_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->trace(fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->trace(fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor debug(fmt::wformat_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->debug(fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->debug(fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor info(fmt::wformat_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->info(fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->info(fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor warn(fmt::wformat_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->warn(fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->warn(fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor error(fmt::wformat_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->error(fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->error(fmt, std::forward<Args>(args)...);
 }
 
 template<typename... Args>
 inline details::Executor critical(fmt::wformat_string<Args...> fmt, Args &&...args)
 {
-    return std::move(default_logger_raw()->critical(fmt, std::forward<Args>(args)...));
+    return default_logger_raw()->critical(fmt, std::forward<Args>(args)...);
 }
 #endif
 
 template<typename T>
 inline details::Executor trace(const T &msg)
 {
-    return std::move(default_logger_raw()->trace(msg));
+    return default_logger_raw()->trace(msg);
 }
 
 template<typename T>
 inline details::Executor debug(const T &msg)
 {
-    return std::move(default_logger_raw()->debug(msg));
+    return default_logger_raw()->debug(msg);
 }
 
 template<typename T>
 inline details::Executor info(const T &msg)
 {
-    return std::move(default_logger_raw()->info(msg));
+    return default_logger_raw()->info(msg);
 }
 
 template<typename T>
 inline details::Executor warn(const T &msg)
 {
-    return std::move(default_logger_raw()->warn(msg));
+    return default_logger_raw()->warn(msg);
 }
 
 template<typename T>
 inline details::Executor error(const T &msg)
 {
-    return std::move(default_logger_raw()->error(msg));
+    return default_logger_raw()->error(msg);
 }
 
 template<typename T>
 inline details::Executor critical(const T &msg)
 {
-    return std::move(default_logger_raw()->critical(msg));
+    return default_logger_raw()->critical(msg);
 }
 
 } // namespace spdlog

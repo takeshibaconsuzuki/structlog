@@ -17,7 +17,13 @@
 #include <spdlog/common.h>
 #include <spdlog/details/log_msg.h>
 #include <spdlog/details/backtracer.h>
-#include <spdlog/details/executor.h>
+#ifdef SPDLOG_HEADER_ONLY
+#    undef SPDLOG_HEADER_ONLY
+#    include <spdlog/details/executor.h>
+#    define SPDLOG_HEADER_ONLY
+#else
+#    include <spdlog/details/executor.h>
+#endif
 #include <spdlog/json_formatter.h>
 
 #ifdef SPDLOG_WCHAR_TO_UTF8_SUPPORT
@@ -89,33 +95,33 @@ public:
     template<typename... Args>
     details::Executor log(source_loc loc, level::level_enum lvl, fmt::format_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log_(loc, lvl, fmt, std::forward<Args>(args)...));
+        return log_(loc, lvl, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor log(level::level_enum lvl, fmt::format_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(source_loc{}, lvl, fmt, std::forward<Args>(args)...));
+        return log(source_loc{}, lvl, fmt, std::forward<Args>(args)...);
     }
 
     template<typename T>
     details::Executor log(level::level_enum lvl, const T &msg)
     {
-        return std::move(log(source_loc{}, lvl, msg));
+        return log(source_loc{}, lvl, msg);
     }
 
     // T can be statically converted to string_view
     template<class T, typename std::enable_if<std::is_convertible<const T &, spdlog::string_view_t>::value, int>::type = 0>
     details::Executor log(source_loc loc, level::level_enum lvl, const T &msg)
     {
-        return std::move(log(loc, lvl, string_view_t{msg}));
+        return log(loc, lvl, string_view_t{msg});
     }
 
     // T cannot be statically converted to format string (including string_view)
     template<class T, typename std::enable_if<!is_convertible_to_any_format_string<const T &>::value, int>::type = 0>
     details::Executor log(source_loc loc, level::level_enum lvl, const T &msg)
     {
-        return std::move(log(loc, lvl, "{}", msg));
+        return log(loc, lvl, "{}", msg);
     }
 
     details::Executor log(log_clock::time_point log_time, source_loc loc, level::level_enum lvl, string_view_t msg)
@@ -124,11 +130,11 @@ public:
         bool traceback_enabled = tracer_.enabled();
         if (!log_enabled && !traceback_enabled)
         {
-            return std::move(details::Executor());
+            return details::Executor();
         }
 
         details::log_msg log_msg(log_time, loc, name_, lvl, msg);
-        return std::move(details::Executor(this, log_msg, log_enabled, traceback_enabled));
+        return details::Executor(this, log_msg, log_enabled, traceback_enabled);
     }
 
     details::Executor log(source_loc loc, level::level_enum lvl, string_view_t msg)
@@ -137,138 +143,138 @@ public:
         bool traceback_enabled = tracer_.enabled();
         if (!log_enabled && !traceback_enabled)
         {
-            return std::move(details::Executor());
+            return details::Executor();
         }
 
         details::log_msg log_msg(loc, name_, lvl, msg);
-        return std::move(details::Executor(this, log_msg, log_enabled, traceback_enabled));
+        return details::Executor(this, log_msg, log_enabled, traceback_enabled);
     }
 
     details::Executor log(level::level_enum lvl, string_view_t msg)
     {
-        return std::move(log(source_loc{}, lvl, msg));
+        return log(source_loc{}, lvl, msg);
     }
 
     template<typename... Args>
     details::Executor trace(fmt::format_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(level::trace, fmt, std::forward<Args>(args)...));
+        return log(level::trace, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor debug(fmt::format_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(level::debug, fmt, std::forward<Args>(args)...));
+        return log(level::debug, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor info(fmt::format_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(level::info, fmt, std::forward<Args>(args)...));
+        return log(level::info, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor warn(fmt::format_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(level::warn, fmt, std::forward<Args>(args)...));
+        return log(level::warn, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor error(fmt::format_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(level::err, fmt, std::forward<Args>(args)...));
+        return log(level::err, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor critical(fmt::format_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(level::critical, fmt, std::forward<Args>(args)...));
+        return log(level::critical, fmt, std::forward<Args>(args)...);
     }
 
 #ifdef SPDLOG_WCHAR_TO_UTF8_SUPPORT
     template<typename... Args>
     details::Executor log(level::level_enum lvl, fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(source_loc{}, lvl, fmt, std::forward<Args>(args)...));
+        return log(source_loc{}, lvl, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor log(source_loc loc, level::level_enum lvl, fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log_(loc, lvl, fmt, std::forward<Args>(args)...));
+        return log_(loc, lvl, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor trace(fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(level::trace, fmt, std::forward<Args>(args)...));
+        return log(level::trace, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor debug(fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(level::debug, fmt, std::forward<Args>(args)...));
+        return log(level::debug, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor info(fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(level::info, fmt, std::forward<Args>(args)...));
+        return log(level::info, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor warn(fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(level::warn, fmt, std::forward<Args>(args)...));
+        return log(level::warn, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor error(fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(level::err, fmt, std::forward<Args>(args)...));
+        return log(level::err, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     details::Executor critical(fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        return std::move(log(level::critical, fmt, std::forward<Args>(args)...));
+        return log(level::critical, fmt, std::forward<Args>(args)...);
     }
 #endif
 
     template<typename T>
     details::Executor trace(const T &msg)
     {
-        return std::move(log(level::trace, msg));
+        return log(level::trace, msg);
     }
 
     template<typename T>
     details::Executor debug(const T &msg)
     {
-        return std::move(log(level::debug, msg));
+        return log(level::debug, msg);
     }
 
     template<typename T>
     details::Executor info(const T &msg)
     {
-        return std::move(log(level::info, msg));
+        return log(level::info, msg);
     }
 
     template<typename T>
     details::Executor warn(const T &msg)
     {
-        return std::move(log(level::warn, msg));
+        return log(level::warn, msg);
     }
 
     template<typename T>
     details::Executor error(const T &msg)
     {
-        return std::move(log(level::err, msg));
+        return log(level::err, msg);
     }
 
     template<typename T>
     details::Executor critical(const T &msg)
     {
-        return std::move(log(level::critical, msg));
+        return log(level::critical, msg);
     }
 
     // return true logging is enabled for the given level.
@@ -339,17 +345,17 @@ protected:
         bool traceback_enabled = tracer_.enabled();
         if (!log_enabled && !traceback_enabled)
         {
-            return std::move(details::Executor());
+            return details::Executor();
         }
         SPDLOG_TRY
         {
             memory_buf_t buf;
             fmt::detail::vformat_to(buf, fmt, fmt::make_format_args(args...));
             details::log_msg log_msg(loc, name_, lvl, string_view_t(buf.data(), buf.size()));
-            return std::move(details::Executor(this, log_msg, log_enabled, traceback_enabled));
+            return details::Executor(this, log_msg, log_enabled, traceback_enabled);
         }
         SPDLOG_LOGGER_CATCH(loc)
-        return std::move(details::Executor());
+        return details::Executor();
     }
 
 #ifdef SPDLOG_WCHAR_TO_UTF8_SUPPORT
@@ -360,7 +366,7 @@ protected:
         bool traceback_enabled = tracer_.enabled();
         if (!log_enabled && !traceback_enabled)
         {
-            return std::move(details::Executor());
+            return details::Executor();
         }
         SPDLOG_TRY
         {
@@ -370,10 +376,10 @@ protected:
             memory_buf_t buf;
             details::os::wstr_to_utf8buf(wstring_view_t(wbuf.data(), wbuf.size()), buf);
             details::log_msg log_msg(loc, name_, lvl, string_view_t(buf.data(), buf.size()));
-            return std::move(details::Executor(this, log_msg, log_enabled, traceback_enabled));
+            return details::Executor(this, log_msg, log_enabled, traceback_enabled);
         }
         SPDLOG_LOGGER_CATCH(loc)
-        return std::move(details::Executor());
+        return details::Executor();
     }
 
     // T can be statically converted to wstring_view, and no formatting needed.
@@ -384,17 +390,17 @@ protected:
         bool traceback_enabled = tracer_.enabled();
         if (!log_enabled && !traceback_enabled)
         {
-            return std::move(details::Executor());
+            return details::Executor();
         }
         SPDLOG_TRY
         {
             memory_buf_t buf;
             details::os::wstr_to_utf8buf(msg, buf);
             details::log_msg log_msg(loc, name_, lvl, string_view_t(buf.data(), buf.size()));
-            return std::move(details::Executor(this, log_msg, log_enabled, traceback_enabled));
+            return details::Executor(this, log_msg, log_enabled, traceback_enabled);
         }
         SPDLOG_LOGGER_CATCH(loc)
-        return std::move(details::Executor());
+        return details::Executor();
     }
 
 #endif // SPDLOG_WCHAR_TO_UTF8_SUPPORT

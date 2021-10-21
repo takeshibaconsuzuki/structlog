@@ -10,12 +10,13 @@
 #include <spdlog/common.h>
 #include <spdlog/json_formatter.h>
 #include <spdlog/pattern_formatter.h>
+#include <spdlog/default_formatter.h>
 
 #include <memory>
 
 template<typename Mutex>
 SPDLOG_INLINE spdlog::sinks::base_sink<Mutex>::base_sink()
-    : formatter_{details::make_unique<spdlog::JSONFormatter>()}
+    : formatter_{details::make_unique<spdlog::default_formatter>()}
 {}
 
 template<typename Mutex>

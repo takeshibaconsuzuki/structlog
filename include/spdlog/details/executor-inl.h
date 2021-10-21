@@ -10,6 +10,8 @@ namespace spdlog {
 
 namespace details {
 
+#ifdef SPDLOG_JSON_LOGGER
+
 SPDLOG_INLINE Executor::Context::Context(logger *lgr, const log_msg &msg, bool log_enabled, bool traceback_enabled)
     : lgr(lgr)
     , msg(msg)
@@ -67,6 +69,21 @@ SPDLOG_INLINE Executor &Executor::operator()(const nlohmann::json &params)
     }
     return *this;
 }
+
+#else
+
+SPDLOG_INLINE Executor::Executor(logger *lgr, const log_msg &msg, bool log_enabled, bool traceback_enabled)
+{
+    lgr->log_it_(msg, log_enabled, traceback_enabled);
+}
+
+SPDLOG_INLINE Executor &Executor::operator()(const nlohmann::json &params)
+{
+    (void)params;
+    return *this;
+}
+
+#endif
 
 } // namespace details
 

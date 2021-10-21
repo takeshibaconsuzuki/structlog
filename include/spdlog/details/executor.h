@@ -9,6 +9,8 @@ class logger;
 
 namespace details {
 
+#ifdef SPDLOG_JSON_LOGGER
+
 class SPDLOG_API Executor
 {
 private:
@@ -41,9 +43,26 @@ public:
     Executor &operator()(const nlohmann::json &params);
 };
 
+#else
+
+class SPDLOG_API Executor
+{
+public:
+    Executor() = default;
+
+    Executor(logger *lgr, const log_msg &msg, bool log_enabled, bool traceback_enabled);
+
+    Executor &operator()(const nlohmann::json &params);
+};
+
+#endif
+
 } // namespace details
 
 } // namespace spdlog
 
-// executor-inl.h is included in logger.h because it needs to know the logger
-// interface
+
+#ifdef SPDLOG_HEADER_ONLY
+#    include "executor-inl.h"
+#endif
+
