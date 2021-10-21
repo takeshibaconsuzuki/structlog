@@ -2,60 +2,34 @@
 
 #include <spdlog/details/os.h>
 #include <spdlog/formatter.h>
-#include <spdlog/populator.h>
+#include <spdlog/populators.h>
+
+#include <memory>
+#include <string>
 
 namespace spdlog {
 
-class JSONFormatter : public formatter
+class json_formatter : public formatter
 {
 private:
     const std::string kEOL;
 
-    populators::PopulatorSet populators_;
+    populators::populator_set populators_;
+
+    static populators::populator_set make_default_populators_();
 
 public:
-    static populators::PopulatorSet make_default_populator_set()
-    {
-        return populators::make_populator_set(details::make_unique<populators::DateTimePopulator>(),
-            details::make_unique<populators::LevelPopulator>(), details::make_unique<populators::LoggerNamePopulator>(),
-            details::make_unique<populators::MessagePopulator>());
-    }
+    json_formatter(std::string eol = spdlog::details::os::default_eol);
 
-    JSONFormatter(std::string eol = spdlog::details::os::default_eol)
-        : JSONFormatter(make_default_populator_set(), eol)
-    {}
+    json_formatter(populators::populator_set &&populators, std::string eol = spdlog::details::os::default_eol);
 
-    JSONFormatter(populators::PopulatorSet &&populators, std::string eol = spdlog::details::os::default_eol)
-        : kEOL(std::move(eol))
-        , populators_(std::move(populators))
-    {}
+    virtual void format(const details::log_msg &msg, memory_buf_t &dest) override;
 
-    void format(const details::log_msg &msg, memory_buf_t &dest) override
-    {
-        nlohmann::json entry = nlohmann::json::object();
-        for (const auto &populator : populators_)
-        {
-            populator->populate(msg, entry);
-        }
-        if (msg.params)
-        {
-            for (const auto &kv : msg.params->items())
-            {
-                entry[kv.key()] = kv.value();
-            }
-        }
-        dest.append(entry.dump() + kEOL);
-    }
-
-    std::unique_ptr<formatter> clone() const override
-    {
-        populators::PopulatorSet populators;
-        for (const auto &populator : populators_)
-        {
-            populators.insert(populator->clone());
-        }
-        return details::make_unique<JSONFormatter>(std::move(populators), kEOL);
-    }
+    virtual std::unique_ptr<formatter> clone() const override;
 };
 
 } // namespace spdlog
+
+#ifdef SPDLOG_HEADER_ONLY
+#    include "json_formatter-inl.h"
+#endif

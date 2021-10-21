@@ -18,6 +18,8 @@
 #include <spdlog/sinks/base_sink-inl.h>
 #include <spdlog/details/null_mutex.h>
 #include <spdlog/details/executor-inl.h>
+#include <spdlog/populators-inl.h>
+#include <spdlog/json_formatter-inl.h>
 
 #include <mutex>
 

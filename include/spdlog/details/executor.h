@@ -1,7 +1,7 @@
 #pragma once
 
 #include <spdlog/details/log_msg_buffer.h>
-#include <spdlog/json.hpp>
+#include <spdlog/json.h>
 
 namespace spdlog {
 
@@ -11,48 +11,48 @@ namespace details {
 
 #ifdef SPDLOG_JSON_LOGGER
 
-class SPDLOG_API Executor
+class SPDLOG_API executor
 {
 private:
-    struct Context
+    struct context
     {
         logger *lgr;
         log_msg_buffer msg;
         bool log_enabled;
         bool traceback_enabled;
 
-        Context(logger *lgr, const log_msg &msg, bool log_enabled, bool traceback_enabled);
-        Context(Context &&other);
+        context(logger *lgr, const log_msg &msg, bool log_enabled, bool traceback_enabled);
+        context(context &&other);
     };
 
-    uint8_t buf_[sizeof(Context)];
+    uint8_t buf_[sizeof(context)];
 
-    Context *ctx_;
+    context *ctx_;
 
 public:
-    Executor();
-    Executor(logger *lgr, const log_msg &msg, bool log_enabled, bool traceback_enabled);
-    Executor(const Executor &other) = delete;
-    Executor(Executor &&other);
+    executor();
+    executor(logger *lgr, const log_msg &msg, bool log_enabled, bool traceback_enabled);
+    executor(const executor &other) = delete;
+    executor(executor &&other);
 
-    ~Executor() noexcept(false);
+    ~executor() noexcept(false);
 
-    Executor &operator=(const Executor &other) = delete;
-    Executor &operator=(Executor &&other) = delete;
+    executor &operator=(const executor &other) = delete;
+    executor &operator=(executor &&other) = delete;
 
-    Executor &operator()(const nlohmann::json &params);
+    executor &operator()(const nlohmann::json &params);
 };
 
 #else
 
-class SPDLOG_API Executor
+class SPDLOG_API executor
 {
 public:
-    Executor() = default;
+    executor() = default;
 
-    Executor(logger *lgr, const log_msg &msg, bool log_enabled, bool traceback_enabled);
+    executor(logger *lgr, const log_msg &msg, bool log_enabled, bool traceback_enabled);
 
-    Executor &operator()(const nlohmann::json &params);
+    executor &operator()(const nlohmann::json &params);
 };
 
 #endif

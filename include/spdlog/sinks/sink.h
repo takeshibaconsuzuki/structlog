@@ -22,7 +22,7 @@ public:
     template<class... Args>
     void set_populators(Args &&... args)
     {
-        set_formatter(details::make_unique<JSONFormatter>(populators::make_populator_set(std::forward<Args>(args)...)));
+        set_formatter(details::make_unique<json_formatter>(populators::make_populator_set(std::forward<Args>(args)...)));
     }
 
     void set_level(level::level_enum log_level);

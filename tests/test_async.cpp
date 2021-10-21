@@ -154,6 +154,7 @@ TEST_CASE("to_file", "[async]")
     spdlog::filename_t filename = SPDLOG_FILENAME_T(TEST_FILENAME);
     {
         auto file_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(filename, true);
+        file_sink->set_formatter(spdlog::details::make_unique<spdlog::pattern_formatter>());
         auto tp = std::make_shared<spdlog::details::thread_pool>(messages, tp_threads);
         auto logger = std::make_shared<spdlog::async_logger>("as", std::move(file_sink), std::move(tp));
 
@@ -166,13 +167,7 @@ TEST_CASE("to_file", "[async]")
     require_message_count(TEST_FILENAME, messages);
     auto contents = file_contents(TEST_FILENAME);
     using spdlog::details::os::default_eol;
-    size_t last_line_idx = contents.rfind(default_eol);
-    if (last_line_idx + strlen(default_eol) == contents.size())
-    {
-        last_line_idx = contents.rfind(default_eol, last_line_idx - 1);
-    }
-    const auto expected = "\"message\":\"Hello message #1023\"";
-    REQUIRE(contents.substr(last_line_idx).find(expected) < std::string::npos);
+    REQUIRE(ends_with(contents, fmt::format("Hello message #1023{}", default_eol)));
 }
 
 TEST_CASE("to_file multi-workers", "[async]")

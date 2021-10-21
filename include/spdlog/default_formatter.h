@@ -6,7 +6,7 @@ namespace spdlog {
 
 #ifdef SPDLOG_JSON_LOGGER
 #    include <spdlog/json_formatter.h>
-typedef ::spdlog::JSONFormatter default_formatter;
+typedef ::spdlog::json_formatter default_formatter;
 #else
 #    include <spdlog/pattern_formatter.h>
 typedef ::spdlog::pattern_formatter default_formatter;
