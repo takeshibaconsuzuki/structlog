@@ -6,7 +6,7 @@ A structured logging library built off of
 
 This project aims to be a drop-in replacement for spdlog. Everything should
 work exactly the same with the following exception: the default formatter has
-been changed to `JSONFormatter`. This means that if you have 1) not set a
+been changed to `json_formatter`. This means that if you have 1) not set a
 custom formatter and 2) have not set a pattern, then your logs should
 automatically start logging in JSON.
 
@@ -50,8 +50,8 @@ int main() {
   // This will not log in JSON because the formatter has been changed to pattern_formatter
   spdlog::info("consectetur");
 
-  // set formatter back to JSONFormatter
-  spdlog::set_formatter(spdlog::details::make_unique<spdlog::JSONFormatter>());
+  // set formatter back to json_formatter
+  spdlog::set_formatter(spdlog::details::make_unique<spdlog::json_formatter>());
   spdlog::info("adipiscing");
 }
 ```
@@ -126,26 +126,26 @@ Outputs:
 
 ### Populators
 
-By default, the JSONFormatter adds `date_time`, `level`, `logger_name` (if
+By default, the json_formatter adds `date_time`, `level`, `logger_name` (if
 available), and `message`. This can by changed through specifying populators.
 
 A populator has the ability to add and remove fields from a log entry before it
 is logged. To set the populators, use the `set_populator` function (to set
 globally) or the `set_populator` method (on logger or sink instances).
-`set_populator` takes a variable number of `std::unique_ptr<Populator>`s:
+`set_populator` takes a variable number of `std::unique_ptr<populator>`s:
 
 ```c++
 spdlog::set_populators(
-    spdlog::details::make_unique<spdlog::populators::LevelPopulator>(),
-    spdlog::details::make_unique<spdlog::populators::MessagePopulator>());
+    spdlog::details::make_unique<spdlog::populators::level_populator>(),
+    spdlog::details::make_unique<spdlog::populators::message_populator>());
 spdlog::info("abc");
 auto logger = spdlog::stdout_logger_mt("baz");
 logger->set_populators(
-    spdlog::details::make_unique<spdlog::populators::LoggerNamePopulator>(),
-    spdlog::details::make_unique<spdlog::populators::MessagePopulator>());
+    spdlog::details::make_unique<spdlog::populators::logger_name_populator>(),
+    spdlog::details::make_unique<spdlog::populators::message_populator>());
 logger->info("def");
 auto another_sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("baz.txt");
-another_sink->set_populators(spdlog::details::make_unique<spdlog::populators::MessagePopulator>());
+another_sink->set_populators(spdlog::details::make_unique<spdlog::populators::message_populator>());
 logger->sinks().push_back(another_sink);
 logger->info("ghi");
 ```
@@ -171,44 +171,44 @@ otherwise you may see inconsistencies.
 #### Custom Populators
 
 structlog provides the following populators:
-- `DateTimePopulator`. Sets `date_time` in the format
+- `date_time_populator`. Sets `date_time` in the format
   `YYYY-mm-dd HH:MM:SS.eee[+/-]HH:MM`.
-- `LevelPopulator`. Sets `level` to log level.
-- `LoggerNamePopulator`. Sets `logger_name` to logger name.
-- `MessagePopulator`. Sets `message` to log message.
-- `PatternPopulator`. Constructed with a field name and a pattern. Sets the
+- `level_populator`. Sets `level` to log level.
+- `logger_name_populator`. Sets `logger_name` to logger name.
+- `message_populator`. Sets `message` to log message.
+- `pattern_populator`. Constructed with a field name and a pattern. Sets the
   field to the format specified by the pattern. See spdlog's pattern
   documentation.
-- `PIDPopulator`. Sets `pid` to process ID.
-- `SrcLocPopulator`. Sets `src_loc` in the format `file:line`.
-- `ThreadIDPopulator`. Sets `thread_id` to thread ID.
-- `TimestampPopulator`. Sets `timestamp` to seconds since epoch.
+- `pid_populator`. Sets `pid` to process ID.
+- `src_loc_populator`. Sets `src_loc` in the format `file:line`.
+- `thread_id_populator`. Sets `thread_id` to thread ID.
+- `timestamp_populator`. Sets `timestamp` to seconds since epoch.
 
-If these are not sufficient, you can extend the `Populator` class. The derived
+If these are not sufficient, you can extend the `populator` class. The derived
 class must implement:
 
 ```c++
 void populate(const spdlog::details::log_msg, nlohmann::json &dest);
-std::unique_ptr<Populator> clone() const;
+std::unique_ptr<populator> clone() const;
 ```
 
 Example:
 
 ```c++
-class MyPopulator : public spdlog::Populator {
+class my_populator : public spdlog::populator {
 public:
   void populate(const spdlog::details::log_msg, nlohmann::json &dest) override {
     dest["language"] = "c++";
   }
 
-  std::unique_ptr<Populator> clone() const {
-    return spdlog::details::make_unique<MyPopulator>();
+  std::unique_ptr<populator> clone() const {
+    return spdlog::details::make_unique<my_populator>();
   }
 };
 
 spdlog::set_populators(
-    spdlog::details::make_unique<MyPopulator>(),
-    spdlog::details::make_unique<spdlog::populators::MessagePopulator>());
+    spdlog::details::make_unique<my_populator>(),
+    spdlog::details::make_unique<spdlog::populators::message_populator>());
 spdlog::info("writing program");
 ```
 
@@ -218,33 +218,33 @@ Output:
 {"language":"c++","message":"writing program"}
 ```
 
-#### PopulatorSet
+#### Populator Set
 
-Populators are a property of JSONFormatter. `set_populator` is a thin wrapper
-which passes a new JSONFormatter to `set_formatter`. This may be done manually
+Populators are a property of json_formatter. `set_populator` is a thin wrapper
+which passes a new json_formatter to `set_formatter`. This may be done manually
 on your side instead:
 
 ```c++
-spdlog::populators::PopulatorSet populators;
+spdlog::populators::populator_set populators;
 populators.insert(spdlog::details::make_unique<...>(...));
-spdlog::set_formatter(spdlog::details::make_unique<spdlog::JSONFormatter>(std::move(populators)));
+spdlog::set_formatter(spdlog::details::make_unique<spdlog::json_formatter>(std::move(populators)));
 ```
 
 ## Implementation Details
 
 All log methods on the logger class have return type
-`spdlog::details::Executor` instead of void. The Executor class keeps track
-of the extra parameters for the entry. The Executor class is callable, and
-calling the Executor with a JSON adds the fields to the Executor's JSON and
-returns `*this`. As a consequence, Executor calls may be chained multiple
+`spdlog::details::executor` instead of void. The executor class keeps track
+of the extra parameters for the entry. The executor class is callable, and
+calling the executor with a JSON adds the fields to the executor's JSON and
+returns `*this`. As a consequence, executor calls may be chained multiple
 times:
 
 ```
 spdlog::info(...)(...)(...)(...);
 ```
 
-The entry is logged when the Executor is destructed. The Executor is not
-copyable, only movable, so the entry is only logged once. Executor specifies
+The entry is logged when the executor is destructed. The executor is not
+copyable, only movable, so the entry is only logged once. executor specifies
 the destructor to be `noexcept(false)` so that exceptions may be thrown from
 it. Of course, we make sure to catch any exceptions and manually call the
-Executor members' destructors before rethrowing.
+executor members' destructors before rethrowing.
