@@ -95,33 +95,33 @@ public:
     template<typename... Args>
     SPDLOG_EXECUTOR_T log(source_loc loc, level::level_enum lvl, fmt::format_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log_(loc, lvl, fmt, std::forward<Args>(args)...);
+        return log_(loc, lvl, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T log(level::level_enum lvl, fmt::format_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(source_loc{}, lvl, fmt, std::forward<Args>(args)...);
+        return log(source_loc{}, lvl, fmt, std::forward<Args>(args)...);
     }
 
     template<typename T>
     SPDLOG_EXECUTOR_T log(level::level_enum lvl, const T &msg)
     {
-        SPDLOG_RETURN_EXECUTOR log(source_loc{}, lvl, msg);
+        return log(source_loc{}, lvl, msg);
     }
 
     // T can be statically converted to string_view
     template<class T, typename std::enable_if<std::is_convertible<const T &, spdlog::string_view_t>::value, int>::type = 0>
     SPDLOG_EXECUTOR_T log(source_loc loc, level::level_enum lvl, const T &msg)
     {
-        SPDLOG_RETURN_EXECUTOR log(loc, lvl, string_view_t{msg});
+        return log(loc, lvl, string_view_t{msg});
     }
 
     // T cannot be statically converted to format string (including string_view)
     template<class T, typename std::enable_if<!is_convertible_to_any_format_string<const T &>::value, int>::type = 0>
     SPDLOG_EXECUTOR_T log(source_loc loc, level::level_enum lvl, const T &msg)
     {
-        SPDLOG_RETURN_EXECUTOR log(loc, lvl, "{}", msg);
+        return log(loc, lvl, "{}", msg);
     }
 
     SPDLOG_EXECUTOR_T log(log_clock::time_point log_time, source_loc loc, level::level_enum lvl, string_view_t msg)
@@ -130,11 +130,11 @@ public:
         bool traceback_enabled = tracer_.enabled();
         if (!log_enabled && !traceback_enabled)
         {
-            return SPDLOG_DUMMY_EXECUTOR;
+            return SPDLOG_EXECUTOR_T{};
         }
 
         details::log_msg log_msg(log_time, loc, name_, lvl, msg);
-        SPDLOG_RETURN_EXECUTOR log_it_(log_msg, log_enabled, traceback_enabled);
+        return log_it_(log_msg, log_enabled, traceback_enabled);
     }
 
     SPDLOG_EXECUTOR_T log(source_loc loc, level::level_enum lvl, string_view_t msg)
@@ -143,138 +143,138 @@ public:
         bool traceback_enabled = tracer_.enabled();
         if (!log_enabled && !traceback_enabled)
         {
-            return SPDLOG_DUMMY_EXECUTOR;
+            return SPDLOG_EXECUTOR_T{};
         }
 
         details::log_msg log_msg(loc, name_, lvl, msg);
-        SPDLOG_RETURN_EXECUTOR log_it_(log_msg, log_enabled, traceback_enabled);
+        return log_it_(log_msg, log_enabled, traceback_enabled);
     }
 
     SPDLOG_EXECUTOR_T log(level::level_enum lvl, string_view_t msg)
     {
-        SPDLOG_RETURN_EXECUTOR log(source_loc{}, lvl, msg);
+        return log(source_loc{}, lvl, msg);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T trace(fmt::format_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::trace, fmt, std::forward<Args>(args)...);
+        return log(level::trace, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T debug(fmt::format_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::debug, fmt, std::forward<Args>(args)...);
+        return log(level::debug, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T info(fmt::format_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::info, fmt, std::forward<Args>(args)...);
+        return log(level::info, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T warn(fmt::format_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::warn, fmt, std::forward<Args>(args)...);
+        return log(level::warn, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T error(fmt::format_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::err, fmt, std::forward<Args>(args)...);
+        return log(level::err, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T critical(fmt::format_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::critical, fmt, std::forward<Args>(args)...);
+        return log(level::critical, fmt, std::forward<Args>(args)...);
     }
 
 #ifdef SPDLOG_WCHAR_TO_UTF8_SUPPORT
     template<typename... Args>
     SPDLOG_EXECUTOR_T log(level::level_enum lvl, fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(source_loc{}, lvl, fmt, std::forward<Args>(args)...);
+        return log(source_loc{}, lvl, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T log(source_loc loc, level::level_enum lvl, fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log_(loc, lvl, fmt, std::forward<Args>(args)...);
+        return log_(loc, lvl, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T trace(fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::trace, fmt, std::forward<Args>(args)...);
+        return log(level::trace, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T debug(fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::debug, fmt, std::forward<Args>(args)...);
+        return log(level::debug, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T info(fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::info, fmt, std::forward<Args>(args)...);
+        return log(level::info, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T warn(fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::warn, fmt, std::forward<Args>(args)...);
+        return log(level::warn, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T error(fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::err, fmt, std::forward<Args>(args)...);
+        return log(level::err, fmt, std::forward<Args>(args)...);
     }
 
     template<typename... Args>
     SPDLOG_EXECUTOR_T critical(fmt::wformat_string<Args...> fmt, Args &&...args)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::critical, fmt, std::forward<Args>(args)...);
+        return log(level::critical, fmt, std::forward<Args>(args)...);
     }
 #endif
 
     template<typename T>
     SPDLOG_EXECUTOR_T trace(const T &msg)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::trace, msg);
+        return log(level::trace, msg);
     }
 
     template<typename T>
     SPDLOG_EXECUTOR_T debug(const T &msg)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::debug, msg);
+        return log(level::debug, msg);
     }
 
     template<typename T>
     SPDLOG_EXECUTOR_T info(const T &msg)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::info, msg);
+        return log(level::info, msg);
     }
 
     template<typename T>
     SPDLOG_EXECUTOR_T warn(const T &msg)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::warn, msg);
+        return log(level::warn, msg);
     }
 
     template<typename T>
     SPDLOG_EXECUTOR_T error(const T &msg)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::err, msg);
+        return log(level::err, msg);
     }
 
     template<typename T>
     SPDLOG_EXECUTOR_T critical(const T &msg)
     {
-        SPDLOG_RETURN_EXECUTOR log(level::critical, msg);
+        return log(level::critical, msg);
     }
 
     // return true logging is enabled for the given level.
@@ -349,17 +349,17 @@ protected:
         bool traceback_enabled = tracer_.enabled();
         if (!log_enabled && !traceback_enabled)
         {
-            return SPDLOG_DUMMY_EXECUTOR;
+            return SPDLOG_EXECUTOR_T{};
         }
         SPDLOG_TRY
         {
             memory_buf_t buf;
             fmt::detail::vformat_to(buf, fmt, fmt::make_format_args(args...));
             details::log_msg log_msg(loc, name_, lvl, string_view_t(buf.data(), buf.size()));
-            SPDLOG_RETURN_EXECUTOR log_it_(log_msg, log_enabled, traceback_enabled);
+            return log_it_(log_msg, log_enabled, traceback_enabled);
         }
         SPDLOG_LOGGER_CATCH(loc)
-        return SPDLOG_DUMMY_EXECUTOR;
+        return SPDLOG_EXECUTOR_T{};
     }
 
 #ifdef SPDLOG_WCHAR_TO_UTF8_SUPPORT
@@ -370,7 +370,7 @@ protected:
         bool traceback_enabled = tracer_.enabled();
         if (!log_enabled && !traceback_enabled)
         {
-            return SPDLOG_DUMMY_EXECUTOR;
+            return SPDLOG_EXECUTOR_T{};
         }
         SPDLOG_TRY
         {
@@ -380,10 +380,10 @@ protected:
             memory_buf_t buf;
             details::os::wstr_to_utf8buf(wstring_view_t(wbuf.data(), wbuf.size()), buf);
             details::log_msg log_msg(loc, name_, lvl, string_view_t(buf.data(), buf.size()));
-            SPDLOG_RETURN_EXECUTOR log_it_(log_msg, log_enabled, traceback_enabled);
+            return log_it_(log_msg, log_enabled, traceback_enabled);
         }
         SPDLOG_LOGGER_CATCH(loc)
-        return SPDLOG_DUMMY_EXECUTOR;
+        return SPDLOG_EXECUTOR_T{};
     }
 
     // T can be statically converted to wstring_view, and no formatting needed.
@@ -394,17 +394,17 @@ protected:
         bool traceback_enabled = tracer_.enabled();
         if (!log_enabled && !traceback_enabled)
         {
-            return SPDLOG_DUMMY_EXECUTOR;
+            return SPDLOG_EXECUTOR_T{};
         }
         SPDLOG_TRY
         {
             memory_buf_t buf;
             details::os::wstr_to_utf8buf(msg, buf);
             details::log_msg log_msg(loc, name_, lvl, string_view_t(buf.data(), buf.size()));
-            SPDLOG_RETURN_EXECUTOR log_it_(log_msg, log_enabled, traceback_enabled);
+            return log_it_(log_msg, log_enabled, traceback_enabled);
         }
         SPDLOG_LOGGER_CATCH(loc)
-        return SPDLOG_DUMMY_EXECUTOR;
+        return SPDLOG_EXECUTOR_T{};
     }
 
 #endif // SPDLOG_WCHAR_TO_UTF8_SUPPORT

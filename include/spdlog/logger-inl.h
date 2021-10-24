@@ -175,17 +175,15 @@ SPDLOG_INLINE void logger::executor_callback(const spdlog::details::log_msg &log
 }
 
 // protected methods
+SPDLOG_INLINE SPDLOG_EXECUTOR_T logger::log_it_(const spdlog::details::log_msg &log_msg, bool log_enabled, bool traceback_enabled)
+{
 #ifdef SPDLOG_JSON_LOGGER
-SPDLOG_INLINE spdlog::details::executor logger::log_it_(const spdlog::details::log_msg &log_msg, bool log_enabled, bool traceback_enabled)
-{
     return spdlog::details::executor(this, log_msg, log_enabled, traceback_enabled);
-}
 #else
-SPDLOG_INLINE void logger::log_it_(const spdlog::details::log_msg &log_msg, bool log_enabled, bool traceback_enabled)
-{
     executor_callback(log_msg, log_enabled, traceback_enabled);
-}
+    return SPDLOG_EXECUTOR_T{};
 #endif
+}
 
 SPDLOG_INLINE void logger::sink_it_(const details::log_msg &msg)
 {

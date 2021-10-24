@@ -17,12 +17,8 @@
 
 #ifdef SPDLOG_JSON_LOGGER
 #    define SPDLOG_EXECUTOR_T ::spdlog::details::executor
-#    define SPDLOG_RETURN_EXECUTOR return
-#    define SPDLOG_DUMMY_EXECUTOR ::spdlog::details::executor()
 #else
-#    define SPDLOG_EXECUTOR_T void
-#    define SPDLOG_RETURN_EXECUTOR
-#    define SPDLOG_DUMMY_EXECUTOR (void)0
+#    define SPDLOG_EXECUTOR_T int
 #endif
 
 #ifdef SPDLOG_COMPILED_LIB
