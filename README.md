@@ -15,7 +15,7 @@ automatically start logging in JSON.
 ### Header only version
 
 Copy the include
-[folder](https://github.com/takeshibaconsuzuki/structlog/tree/v1.x/include/spdlog)
+[folder](https://github.com/takeshibaconsuzuki/structlog/tree/master/include/spdlog)
 to your build tree and use a C++11 compiler.
 
 ### Static lib version (recommended - much faster compile times)
