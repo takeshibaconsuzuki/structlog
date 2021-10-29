@@ -111,6 +111,12 @@ populator_set make_populator_set(Args &&... args)
     return ret;
 }
 
+inline populator_set make_populator_set()
+{
+    populator_set ret;
+    return ret;
+}
+
 } // namespace populators
 
 } // namespace spdlog
