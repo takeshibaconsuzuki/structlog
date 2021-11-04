@@ -201,7 +201,7 @@ public:
     dest["language"] = "c++";
   }
 
-  std::unique_ptr<populator> clone() const {
+  std::unique_ptr<populator> clone() const override {
     return spdlog::details::make_unique<my_populator>();
   }
 };
